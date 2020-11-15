@@ -6,6 +6,8 @@ function HomePage() {
 
     const [names, setNames] = useState([]);
     const [input, setInput] = useState("");
+    let algo = "asd";
+    algo.substr()
 
     const handleInputChange = ({ target }) => {
         setInput(target.value);
@@ -53,7 +55,12 @@ function HomePage() {
                                             onClick={handleClickName}
                                             key={i}
                                         >
-                                            {item}
+                                            <span>
+                                                {input}
+                                                <b>
+                                                    {item.substring(input.length, item.length)}
+                                                </b>
+                                            </span>
                                         </li>)
                                 })
                             }
