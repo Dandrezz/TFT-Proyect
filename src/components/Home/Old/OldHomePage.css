@@ -1,0 +1,60 @@
+.main-input{
+    margin: auto;
+    width: 500px;
+}
+
+.suggestions {
+    border: 1px solid #999;
+    border-top-width: 0;
+    list-style: none;
+    margin-top: 0;
+    overflow-y: auto;
+    padding-left: 0;
+    margin: auto;
+    width: 548px;
+}
+
+input {
+  border: 1px solid #999;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  border-radius: 24px;
+}
+
+@media only screen and (max-width: 800px) {
+    .main-input{
+        width: auto;
+    }
+    .suggestions {
+        width: auto;
+    } 
+}
+
+input:hover {
+  border-color: #a0a0a0 #b9b9b9 #b9b9b9 #b9b9b9;
+}
+
+input:focus{
+  outline: none;
+}
+
+.focus-input{
+  border-radius: 24px 24px 0 0; 
+  box-shadow: 0 0px 6px rgba(32,33,36,.28);
+}
+  
+.suggestions li {
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  text-align: left;
+}
+  
+.suggestion-active,
+.suggestions li:hover {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+ul {
+  width: 500px;
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 0px 6px rgba(32,33,36,.28);
+}

@@ -36,7 +36,7 @@ function HomePage() {
                         Alpha
                     </h1>
                 </div>
-                <div className="top-1 searchBar">
+                <div className="top-1">
                     <input
                         className={`main-input ${names.length !== 0 && "focus-input"}`}
                         onChange={handleInputChange}
