@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import './HomePage.css';
 import listName from '../../data/namesChampions.json';
+import comp from '../../data/comp.json';
 
 function HomePage() {
 
@@ -9,33 +10,35 @@ function HomePage() {
     const [temp, setTemp] = useState("");
     const inputSearch = useRef();
     const [mouseOver, setMouseOver] = useState(true);
+    const [compositions, setCompositions] = useState([]);
+
     const handleKeyPress = (e) => {
-        setMouseOver(true);
-        if( e.keyCode ===40 ){
+        if(names.length===0)return;
+        if (e.keyCode === 40) {
             const index = names.indexOf(input);
-            if( index > (names.length - 2) ){
+            if (index > (names.length - 2)) {
                 setInput(temp);
-            }else if(index===-1){
+            } else if (index === -1) {
                 setTemp(input);
                 setInput(names[0]);
-            }else{
-                setInput(names[ names.indexOf(input) + 1 ]);
+            } else {
+                setInput(names[names.indexOf(input) + 1]);
             }
-        }else if( e.keyCode === 38 ){
+        } else if (e.keyCode === 38) {
             e.preventDefault();
             const index = names.indexOf(input);
-            if(index===-1){
+            if (index === -1) {
                 setTemp(input);
                 setInput(names[names.length - 1]);
-            }else if(index===0){
+            } else if (index === 0) {
                 setInput(temp);
-            }else{
-                setInput(names[ names.indexOf(input) - 1 ]);
+            } else {
+                setInput(names[names.indexOf(input) - 1]);
             }
         }
     }
 
-    const handleInputChange = ({target}) => {
+    const handleInputChange = ({ target }) => {
         setInput(target.value);
         if (target.value.length) {
             setNames(listName["names"].filter(item => (item.toLowerCase().includes(target.value.toLowerCase()))).splice(0, 5));
@@ -46,16 +49,19 @@ function HomePage() {
 
     const handleClickName = (e) => {
         setInput(e.currentTarget.innerText);
-        setNames([]);
+        LoadComps(e.currentTarget.innerText);
     }
-
+    
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(input);
+        LoadComps(e.target[0].value);
     }
 
-    const handleMouseOver = (e) =>{
-        setMouseOver(false);
+    const LoadComps = (campeonName) => {
+        if(listName["names"].indexOf(campeonName)!==-1){
+            setNames([]);
+            setCompositions( comp["summary"].filter(comp => comp.includes(campeonName)) );
+        }
     }
 
     return (
@@ -80,13 +86,14 @@ function HomePage() {
                     {
                         (names.length !== 0) &&
                         <ul className="suggestions"
-                            onMouseOver={handleMouseOver}
+                            onMouseEnter={()=>setMouseOver(false)}
+                            onMouseLeave={()=>setMouseOver(true)}
                         >
                             {
                                 names.map((item, i) => {
                                     return (
                                         <li
-                                            className={`suggestion-active ${(item===input && mouseOver === true ) && "select"}`}
+                                            className={`suggestion-active ${(item === input && mouseOver === true) && "select"}`}
                                             onClick={handleClickName}
                                             key={i}
                                         >
@@ -103,6 +110,27 @@ function HomePage() {
                     }
                 </div>
             </form>
+            {
+                compositions && 
+                compositions.map((item,i)=>{
+                    return(
+                        <div key={i}>
+                            <ul>
+                                {item.map((nameChampeon,i)=>{
+                                    return(
+                                        <li
+                                            key={i}
+                                        >
+                                            {nameChampeon}
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                            <hr/>
+                        </div>
+                    )
+                })
+            }
         </div>
     )
 }
