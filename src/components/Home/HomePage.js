@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import './HomePage.css';
 import listName from '../../data/namesChampions.json';
 import comp from '../../data/comp.json';
+import info from '../../data/dateChampions.json';
 
 function HomePage() {
 
@@ -13,7 +14,7 @@ function HomePage() {
     const [compositions, setCompositions] = useState([]);
 
     const handleKeyPress = (e) => {
-        if(names.length===0)return;
+        if (names.length === 0) return;
         if (e.keyCode === 40) {
             const index = names.indexOf(input);
             if (index > (names.length - 2)) {
@@ -51,25 +52,26 @@ function HomePage() {
         setInput(e.currentTarget.innerText);
         LoadComps(e.currentTarget.innerText);
     }
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         LoadComps(e.target[0].value);
     }
 
     const LoadComps = (campeonName) => {
-        if(listName["names"].indexOf(campeonName)!==-1){
+        setMouseOver(true);
+        if (listName["names"].indexOf(campeonName) !== -1) {
             setNames([]);
-            setCompositions( comp["summary"].filter(comp => comp.includes(campeonName)) );
+            setCompositions(comp["summary"].filter(comp => comp.includes(campeonName)));
         }
     }
 
     return (
         <div>
-            <form onSubmit={handleSubmit} className="top-10 center-text">
+            <form onSubmit={handleSubmit} className={(compositions.length > 0 ? `top-3` : `top-10`) + ` animation center-text`}>
                 <div>
                     <h1 className="color-blue same-line">
-                        Diego
+                        TeamFightTactics
                     </h1>
                     <h1 className="color-orange same-line">
                         Alpha
@@ -86,8 +88,8 @@ function HomePage() {
                     {
                         (names.length !== 0) &&
                         <ul className="suggestions"
-                            onMouseEnter={()=>setMouseOver(false)}
-                            onMouseLeave={()=>setMouseOver(true)}
+                            onMouseEnter={() => setMouseOver(false)}
+                            onMouseLeave={() => setMouseOver(true)}
                         >
                             {
                                 names.map((item, i) => {
@@ -110,23 +112,43 @@ function HomePage() {
                     }
                 </div>
             </form>
+            <div className="top-1"/>
             {
-                compositions && 
-                compositions.map((item,i)=>{
-                    return(
-                        <div key={i}>
-                            <ul>
-                                {item.map((nameChampeon,i)=>{
-                                    return(
+                compositions &&
+                compositions.map((item, i) => {
+                    return (
+                        <div
+                            key={i}
+                            className="center-text"
+                        >
+                            <span>
+                                <b>
+                                    Title
+                                </b>
+                            </span>
+                            <ul
+                                className="padd-0"
+                            >
+                                {item.map((nameChampeon, i) => {
+                                    return (
                                         <li
                                             key={i}
+                                            className="same-line"
                                         >
-                                            {nameChampeon}
+                                            <div
+                                                className="same-line tooltip"
+                                            >
+                                                <img
+                                                    width="60px"
+                                                    src={info["champios"][nameChampeon.trim().replace(/\s/g, '').toLowerCase()]["image_url"]}
+                                                    alt={nameChampeon.trim().toLowerCase()}
+                                                />
+                                                <span className="tooltiptext">{nameChampeon.trim()}</span>
+                                            </div>
                                         </li>
                                     )
                                 })}
                             </ul>
-                            <hr/>
                         </div>
                     )
                 })
